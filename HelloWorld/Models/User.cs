@@ -9,6 +9,7 @@ namespace HelloWorld.Models
         private string nameError;
         private string passwordError;
         private bool isSubmitEnabled;
+        private const int MAX_INPUT_SIZE = 12;
 
         public string NameError
         {
@@ -100,13 +101,33 @@ namespace HelloWorld.Models
             }
 
         }
-        
-        private void checkValidInput()
+
+        // check that a field (name or password) is OK
+        private bool checkValidInput(string field, string fieldName, out string error)
         {
-            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Password))
-                IsSubmitEnabled = false;
-            else
+            if (string.IsNullOrEmpty(field))
+            {
+                error = fieldName + " cannot be empty.";
+                return false;
+            }
+
+            if (field.Length > MAX_INPUT_SIZE)
+            {
+                error = fieldName + " cannot be longer than " + MAX_INPUT_SIZE + " characters.";
+                return false;
+            }
+
+            error = string.Empty;
+            return true;
+        }
+
+        private void checkSubmit()
+        {
+            string error;
+            if (checkValidInput(Name, "Name", out error) && checkValidInput(Password, "Password", out error))
                 IsSubmitEnabled = true;
+            else
+                IsSubmitEnabled = false;
         }
 
         // IDataErrorInfo interface
@@ -119,31 +140,19 @@ namespace HelloWorld.Models
                 {
                     case "Name":
                         {
-                            NameError = "";
-                            if (string.IsNullOrEmpty(Name))
-                            {
-                                NameError = "Name cannot be empty.";
-                            }
-                            if (Name.Length > 12)
-                            {
-                                NameError = "Name cannot be longer than 12 characters.";
-                            }
-                            checkValidInput();
+                            string error;
+                            checkValidInput(Name, "Name", out error);
+                            NameError = error;
+                            checkSubmit();
                             return NameError;
                         }
 
                     case "Password":
                         {
-                            PasswordError = "";
-                            if (string.IsNullOrEmpty(Password))
-                            {
-                                PasswordError = "Password cannot be empty.";
-                            }
-                            if (Password.Length > 12)
-                            {
-                                PasswordError = "Password cannot be longer than 12 characters.";
-                            }
-                            checkValidInput();
+                            string error;
+                            checkValidInput(Password, "Password", out error);
+                            PasswordError = error;
+                            checkSubmit();
                             return PasswordError;
                         }
                     default:
