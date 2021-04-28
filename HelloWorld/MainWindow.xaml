@@ -1,0 +1,38 @@
+﻿<Window x:Class="HelloWorld.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HelloWorld"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <StackPanel x:Name="uxContainer">
+
+        <TextBlock>Enter Name:</TextBlock>
+
+        <TextBox x:Name="uxName" 
+        Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+        </TextBox>
+
+        <Label x:Name="uxNameError" 
+        Content="{Binding NameError, UpdateSourceTrigger=PropertyChanged}"></Label>
+        
+        <TextBlock>Enter Password:</TextBlock>
+        <TextBox x:Name="uxPassword" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></TextBox>
+        <Label x:Name="uxPasswordError" 
+        Content="{Binding PasswordError, UpdateSourceTrigger=PropertyChanged}"></Label>
+        <Button x:Name="uxSubmit" Click="uxSubmit_Click" IsEnabled="{Binding IsSubmitEnabled, UpdateSourceTrigger=PropertyChanged}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Submit</TextBlock>
+                <!--<CheckBox Margin="15,0,0,0" Content="Remember Me"/>-->
+            </StackPanel>
+        </Button>
+        <!--<Button>
+            <StackPanel Orientation="Horizontal">
+                <Image Source="images/ic_thumb_up_black_24dp_2x.png" />
+                <TextBlock Text="Thumbs Up" />
+            </StackPanel>
+        </Button>-->
+    </StackPanel>
+</Window>
